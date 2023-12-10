@@ -1,7 +1,7 @@
 # Image Classifier Training and Testing
 
 ## Overview
-This folder contains python code to train a CNN image classifier on the L-AVATeD Image Dataset. 
+This folder contains python code to train, accuracy and performance tests CNN image classifiers with the L-AVATeD Image Dataset. 
 
 (NOTE: The L-AVATeD dataset must be present on your local machine. The default/expected location is in the `../data/` folder.)
 

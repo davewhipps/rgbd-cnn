@@ -12,13 +12,11 @@ from utilities import plot_history, read_hyperparameters, get_class_weights, get
 
 # Parametrize hyperparams so we can grid search
 HYPERPARAMS = {
-    'WANTS_TRAIN_FULL_MODEL': True,
     'NUM_EPOCHS': 20,
     'BATCH_SIZE': 32,
     'IMG_SIZE': (512, 384),
     'REGULARIZATION': 0.5,
-    'BASE_LEARNING_RATE': 0.0001,
-    'USE_CACHING': False
+    'BASE_LEARNING_RATE': 0.0001
 }
 
 # Main entry point

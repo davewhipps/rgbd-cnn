@@ -12,8 +12,7 @@ from tensorflow.python.profiler.option_builder import ProfileOptionBuilder
 
 HYPERPARAMS = {
     'BATCH_SIZE': 32,
-    'IMG_SIZE': (256, 192),
-    'USE_CACHING': True
+    'IMG_SIZE': (256, 192)
 }
 
 # Main entry point

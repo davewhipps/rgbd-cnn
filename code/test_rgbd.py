@@ -19,8 +19,7 @@ from utilities import MultipleInputGenerator, read_hyperparameters, get_class_we
 #Parametrize hyperparams so we can grid search
 HYPERPARAMS = {
   'BATCH_SIZE' : 32,
-  'IMG_SIZE' : (256, 192),
-  'USE_CACHING' : True
+  'IMG_SIZE' : (256, 192)
 }
 
 # Main entry point
