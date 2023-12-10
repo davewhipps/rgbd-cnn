@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
 	# Add some Metadata	
 	model.author = 'David Whipps'
-	model.license = 'BSD'
+	model.license = 'MIT'
 	model.short_description = 'Predicts Walking Terrain'
 	model.version = '1'
 
