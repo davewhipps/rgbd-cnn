@@ -28,7 +28,7 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--data_dir', type=str, required=False, default='../data' )
 	parser.add_argument('--model_dir', type=str, required=False, default='../models/lavated-rgbd')
-	parser.add_argument('--output_dir', type=str, required=False, default='../output' )
+	parser.add_argument('--output_dir', type=str, required=False, default='../output/rgbd' )
 	args = parser.parse_args()
 
 	# Ensure we're working with absolute paths

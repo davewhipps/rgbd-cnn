@@ -26,16 +26,18 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dir', type=str, required=True)
-    parser.add_argument('--output_dir', type=str, required=True)
     parser.add_argument('--params_file', type=str, required=False)
+    parser.add_argument('--output_dir', type=str, required=True)
     args = parser.parse_args()
 
-    # Store the output directory
-    output_dir = args.output_dir
+	# Ensure we're working with absolute paths
+    data_dir = os.path.abspath(args.data_dir)
+    output_dir = os.path.abspath(args.output_dir)
 
     # Read in hyperparams from YAML file, if any
     if args.params_file:
-        HYPERPARAMS = read_hyperparameters(args.params_file, HYPERPARAMS)
+        params_file = os.path.abspath(args.params_file)
+        HYPERPARAMS = read_hyperparameters(params_file, HYPERPARAMS)
 
     # rename for readability
     batch_size = HYPERPARAMS['BATCH_SIZE']
@@ -47,7 +49,7 @@ if __name__ == "__main__":
     modality = HYPERPARAMS['MODALITY']
 
     # Read in the training data
-    train_dir = os.path.join(args.data_dir, 'train')
+    train_dir = os.path.join(data_dir, 'train')
     train_data = tf.keras.utils.image_dataset_from_directory(train_dir,
                                                              seed=42,
                                                              shuffle=True,
@@ -55,7 +57,7 @@ if __name__ == "__main__":
                                                              image_size=image_size)
 
     # Read in the validation data
-    validation_dir = os.path.join(args.data_dir, 'val')
+    validation_dir = os.path.join(data_dir, 'val')
     val_data = tf.keras.utils.image_dataset_from_directory(validation_dir,
                                                            seed=42,
                                                            shuffle=True,

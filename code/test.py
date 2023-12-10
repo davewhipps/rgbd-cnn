@@ -29,22 +29,25 @@ if __name__ == "__main__":
     parser.add_argument('--output_dir', type=str, required=True)
     args = parser.parse_args()
 
-    # Store the output directory
-    OUTPUT_DIR = args.output_dir
+    # Ensure we're working with absolute paths
+    data_dir = os.path.abspath(args.data_dir)
+    model_dir = os.path.abspath(args.model_dir)
+    output_dir = os.path.abspath(args.output_dir)
 
     # Read in the test data
-    test_data_path = os.path.join(args.data_dir, 'test')
+    test_data_path = os.path.join(data_dir, 'test')
     test_generator = ImageDataGenerator()
     test_data_generator = test_generator.flow_from_directory(
         test_data_path,
         target_size=HYPERPARAMS['IMG_SIZE'],
         batch_size=HYPERPARAMS['BATCH_SIZE'],
         shuffle=False)
+    
     test_steps_per_epoch = math.ceil(
         test_data_generator.samples / test_data_generator.batch_size)
 
     # load the model
-    model = tf.keras.models.load_model(args.model_dir)
+    model = tf.keras.models.load_model(model_dir)
 
     predictions = model.predict(
         test_data_generator, steps=test_steps_per_epoch)
@@ -79,13 +82,13 @@ if __name__ == "__main__":
 
     date_time_string = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     confusion_matrix_file = os.path.join(
-        OUTPUT_DIR, date_time_string, "confusion_matrix.png")
+        output_dir, date_time_string, "confusion_matrix.png")
     confusion_matrix_dir = os.path.dirname(confusion_matrix_file)
     if not os.path.isdir(confusion_matrix_dir):
         os.makedirs(confusion_matrix_dir)
     plt.savefig(confusion_matrix_file, bbox_inches='tight')
 
     classification_report_file = os.path.join(
-        OUTPUT_DIR, date_time_string, "classification_report.txt")
+        output_dir, date_time_string, "classification_report.txt")
     with open(classification_report_file, 'w') as outfile:
         report_df.to_string(outfile)

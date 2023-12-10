@@ -26,17 +26,19 @@ if __name__ == "__main__":
 
 	# Get the command line args
 	parser = argparse.ArgumentParser()
-	parser.add_argument('--data_dir', type=str, required=True )
-	parser.add_argument('--output_dir', type=str, required=True )
-	parser.add_argument('--params_file', type=str, required=False )
+	parser.add_argument('--data_dir', type=str, required=False, default="../data" )
+	parser.add_argument('--output_dir', type=str, required=False, default="../output/rgbd" )
+	parser.add_argument('--params_file', type=str, required=False, default="hyperparameters/hyperparams_rgbd.yaml" )
 	args = parser.parse_args()
 
-	# Store the output directory
-	outpur_dir = args.output_dir
+	# Ensure we're working with absolute paths
+	data_dir = os.path.abspath(args.data_dir)
+	output_dir = os.path.abspath(args.output_dir)
 
 	# Read in hyperparams from YAML file, if any
 	if args.params_file:
-		HYPERPARAMS = read_hyperparameters( args.params_file, HYPERPARAMS )
+		params_file = os.path.abspath(args.params_file)
+		HYPERPARAMS = read_hyperparameters( params_file, HYPERPARAMS )
 
 	# rename for readability
 	batch_size = HYPERPARAMS['BATCH_SIZE']
@@ -47,8 +49,8 @@ if __name__ == "__main__":
 	epochs = HYPERPARAMS['NUM_EPOCHS']
 
 	# Some data folder name constants
-	data_source_folder = args.data_dir
-	rgb_data_folder_name = "lavated_data_split"
+	data_source_folder = data_dir
+	rgb_data_folder_name = "lavated_data_split_rgb"
 	lidar_data_folder_name = "lavated_data_split_lidar"
 	train_data_folder_name = "train"
 	val_data_folder_name = "val"
@@ -99,7 +101,7 @@ if __name__ == "__main__":
 
 	# Use checkpointing so that we can resume, as well as test and export
 	date_time_string = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-	checkpoint_path = os.path.join(outpur_dir, "checkpoints", date_time_string, "cp-{epoch:04d}.ckpt")
+	checkpoint_path = os.path.join(output_dir, "checkpoints", date_time_string, "cp-{epoch:04d}.ckpt")
 	checkpoint_dir = os.path.dirname(checkpoint_path)
 	checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_dir,
 							  								 save_best_only=True,
@@ -116,9 +118,9 @@ if __name__ == "__main__":
 						callbacks=[checkpoint_callback, early_stopping])
 
 	# Save out the "best" model
-	final_model_path = os.path.join(outpur_dir, "saved_models", date_time_string)
+	final_model_path = os.path.join(output_dir, "saved_models", date_time_string)
 	os.makedirs(final_model_path, exist_ok = True)
 	model.save(final_model_path+'/lavated-rgbd')
 
 	# Plot learning curves, and save as an image
-	plot_history( history, outpur_dir, date_time_string )
+	plot_history( history, output_dir, date_time_string )
