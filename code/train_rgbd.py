@@ -46,8 +46,8 @@ if __name__ == "__main__":
 
 	# Some data folder name constants
 	data_source_folder = args.data_dir
-	rgb_data_folder_name = "s2mnet_data_split"
-	lidar_data_folder_name = "s2mnet_data_split_lidar"
+	rgb_data_folder_name = "lavated_data_split"
+	lidar_data_folder_name = "lavated_data_split_lidar"
 	train_data_folder_name = "train"
 	val_data_folder_name = "val"
 
@@ -116,7 +116,7 @@ if __name__ == "__main__":
 	# Save out the "best" model
 	final_model_path = os.path.join(outpur_dir, "saved_models", date_time_string)
 	os.makedirs(final_model_path, exist_ok = True)
-	model.save(final_model_path+'/s2mnet_model')
+	model.save(final_model_path+'/lavated-rgbd')
 
 	# Plot learning curves, and save as an image
 	plot_history( history, outpur_dir, date_time_string )

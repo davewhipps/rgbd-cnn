@@ -117,7 +117,7 @@ if __name__ == "__main__":
     final_model_path = os.path.join(
         outpur_dir, "saved_models", date_time_string)
     os.makedirs(final_model_path, exist_ok=True)
-    model.save(final_model_path+'/s2mnet_model')
+    model.save(final_model_path+'/lavated-'+modality)
 
     # Plot learning curves, and save as an image
     plot_history(history, outpur_dir, date_time_string)

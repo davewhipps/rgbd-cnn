@@ -22,8 +22,8 @@ if __name__ == "__main__":
 
     # Read in the test data
     data_source_folder = args.data_dir
-    rgb_data_folder_name = "s2mnet_data_split"
-    lidar_data_folder_name = "s2mnet_data_split_lidar"
+    rgb_data_folder_name = "lavated_data_split"
+    lidar_data_folder_name = "lavated_data_split_lidar"
     test_data_folder_name = "test"
 
     rgb_test_dir = os.path.join(
