@@ -1,3 +1,6 @@
+""" This module trains a multimodal, parallel architecture model on the L-AVATeD dataset
+"""
+
 import os
 import datetime
 import argparse
@@ -62,8 +65,7 @@ if __name__ == "__main__":
 	lidar_train_dir = os.path.join( data_source_folder, lidar_data_folder_name, train_data_folder_name ) #path to Lidar training data
 	lidar_valid_dir = os.path.join( data_source_folder, lidar_data_folder_name, val_data_folder_name ) #path to Lidar validation data
 
-	# The L-AVATeD dataset has unbalanced classes, and so we need to account for that 
-	# by weighting our loss
+	# The L-AVATeD dataset has unbalanced classes, and so we need to account for that by weighting our loss
 	class_weights, num_classes = get_class_weights( rgb_train_dir  )
 	print("Class Weights: ", class_weights) # Output the class weights
 

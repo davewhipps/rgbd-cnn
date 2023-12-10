@@ -1,3 +1,6 @@
+""" This module trains a simple model (defined in utils.models.get_base_model) on the data passed into the --data-dir argument.
+"""
+
 import os
 import datetime
 import argparse
@@ -20,10 +23,9 @@ HYPERPARAMS = {
     'BASE_LEARNING_RATE': 0.0001
 }
 
-# Main entry point
+# Main entry point. Begins training.
 if __name__ == "__main__":
     # Get the command line args
-
     parser = argparse.ArgumentParser()
     parser.add_argument('--data_dir', type=str, required=True)
     parser.add_argument('--params_file', type=str, required=False)
