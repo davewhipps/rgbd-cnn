@@ -5,6 +5,7 @@
 .vscode
 
 # Project specific
+output/
 data/lavated_lidar_split
 data/lavated_rgb_split
 

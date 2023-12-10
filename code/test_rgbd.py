@@ -13,6 +13,7 @@ from sklearn.metrics import classification_report, roc_auc_score
 from sklearn import metrics
 import seaborn as sn
 import pandas as pd
+from utilities import MultipleInputGenerator, read_hyperparameters, get_class_weights, get_base_pipeline
 
 
 #Parametrize hyperparams so we can grid search
@@ -34,46 +35,6 @@ if __name__ == "__main__":
 	# Store the output directory
 	OUTPUT_DIR = args.output_dir
 
-	class MultipleInputGenerator(tf.keras.utils.Sequence):
-		def __init__(self, dir_train_01, dir_train_02, batch_size):
-			# Keras generator
-			self.generator = ImageDataGenerator()
-
-			# Real time multiple input data augmentation
-			self.genX1 = self.generator.flow_from_directory(
-				dir_train_01,
-				target_size = HYPERPARAMS['IMG_SIZE'],
-				batch_size  = HYPERPARAMS['BATCH_SIZE'],
-				seed        = 42,
-				shuffle		= False
-			)
-			self.genX2 = self.generator.flow_from_directory(
-				dir_train_02,
-				target_size = HYPERPARAMS['IMG_SIZE'],
-				batch_size  = HYPERPARAMS['BATCH_SIZE'],
-				seed        = 42,
-				shuffle		= False
-			)
-
-			self.samples = self.genX1.samples
-			self.batch_size = self.genX1.batch_size
-			self.classes = self.genX1.classes
-			self.class_indices = self.genX1.class_indices
-
-
-		def __len__(self):
-			"""It is mandatory to implement it on Keras Sequence"""
-			return self.genX1.__len__()
-
-		def __getitem__(self, index):
-			"""Getting items from the 2 generators and packing them"""
-			X1_batch, Y_batch = self.genX1.__getitem__(index)
-			X2_batch, Y_batch = self.genX2.__getitem__(index)
-
-			X_batch = [X1_batch, X2_batch]
-
-			return X_batch, Y_batch
-
 	# Read in the test data
 	data_source_folder = args.data_dir
 	rgb_data_folder_name = "s2mnet_data_split"
@@ -83,7 +44,7 @@ if __name__ == "__main__":
 	rgb_test_dir = os.path.join(data_source_folder, rgb_data_folder_name, test_data_folder_name ) #path to RGB test data
 	lidar_test_dir = os.path.join(data_source_folder, lidar_data_folder_name, test_data_folder_name ) #path to Lidar test data
 
-	test_data_generator = MultipleInputGenerator( rgb_test_dir, lidar_test_dir, HYPERPARAMS['IMG_SIZE'] )
+	test_data_generator = MultipleInputGenerator( rgb_test_dir, lidar_test_dir, HYPERPARAMS['BATCH_SIZE'], HYPERPARAMS['IMG_SIZE'], shuffle=False )
 	test_steps_per_epoch = math.ceil(test_data_generator.samples / test_data_generator.batch_size)
 
 	# load the model
