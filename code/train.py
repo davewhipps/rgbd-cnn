@@ -31,7 +31,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Store the output directory
-    outpur_dir = args.output_dir
+    output_dir = args.output_dir
 
     # Read in hyperparams from YAML file, if any
     if args.params_file:
@@ -97,7 +97,7 @@ if __name__ == "__main__":
     # Use checkpointing so that we can resume, as well as test and export
     date_time_string = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
     checkpoint_path = os.path.join(
-        outpur_dir, "checkpoints", date_time_string, "cp-{epoch:04d}.ckpt")
+        output_dir, "checkpoints", date_time_string, "cp-{epoch:04d}.ckpt")
     checkpoint_dir = os.path.dirname(checkpoint_path)
     checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_dir,
                                                              save_best_only=True,
@@ -116,9 +116,9 @@ if __name__ == "__main__":
 
     # Save out the "best" model
     final_model_path = os.path.join(
-        outpur_dir, "saved_models", date_time_string)
+        output_dir, "saved_models", date_time_string)
     os.makedirs(final_model_path, exist_ok=True)
     model.save(final_model_path+'/lavated-'+modality)
 
     # Plot learning curves, and save as an image
-    plot_history(history, outpur_dir, date_time_string)
+    plot_history(history, output_dir, date_time_string)

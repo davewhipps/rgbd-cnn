@@ -3,6 +3,7 @@ import math
 import datetime
 import argparse
 import yaml
+import pathlib
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import matplotlib.pyplot as plt
@@ -25,28 +26,39 @@ HYPERPARAMS = {
 if __name__ == "__main__":
 	# Get the command line args
 	parser = argparse.ArgumentParser()
-	parser.add_argument('--data_dir', type=str, required=True )
-	parser.add_argument('--model_dir', type=str, required=True )
-	parser.add_argument('--output_dir', type=str, required=True )
+	parser.add_argument('--data_dir', type=str, required=False, default='../data' )
+	parser.add_argument('--model_dir', type=str, required=False, default='../models/lavated-rgbd')
+	parser.add_argument('--output_dir', type=str, required=False, default='../output' )
 	args = parser.parse_args()
 
-	# Store the output directory
-	OUTPUT_DIR = args.output_dir
-
+	# Ensure we're working with absolute paths
+	data_dir = os.path.abspath(args.data_dir)
+	model_dir = os.path.abspath(args.model_dir)
+	output_dir = os.path.abspath(args.output_dir)
+	
 	# Read in the test data
-	data_source_folder = args.data_dir
-	rgb_data_folder_name = "lavated_data_split"
+	rgb_data_folder_name = "lavated_data_split_rgb"
 	lidar_data_folder_name = "lavated_data_split_lidar"
 	test_data_folder_name = "test"
 
-	rgb_test_dir = os.path.join(data_source_folder, rgb_data_folder_name, test_data_folder_name ) #path to RGB test data
-	lidar_test_dir = os.path.join(data_source_folder, lidar_data_folder_name, test_data_folder_name ) #path to Lidar test data
+	# Check if the folder exists, bail out if not
+	rgb_test_dir = os.path.join(data_dir, rgb_data_folder_name, test_data_folder_name ) #path to RGB test data
+	if not pathlib.Path(rgb_test_dir).resolve().exists():
+		print('Directory does not exist: ', rgb_test_dir)
+		raise Exception('Directory does not exist: '+rgb_test_dir)
 
+	# Check if the folder exists, bail out if not
+	lidar_test_dir = os.path.join(data_dir, lidar_data_folder_name, test_data_folder_name ) #path to Lidar test data
+	if not pathlib.Path(lidar_test_dir).resolve().exists():
+		print('Directory does not exist: ', lidar_test_dir)
+		raise Exception('Directory does not exist: '+lidar_test_dir)
+	
+	# Create our image data generator
 	test_data_generator = MultipleInputGenerator( rgb_test_dir, lidar_test_dir, HYPERPARAMS['BATCH_SIZE'], HYPERPARAMS['IMG_SIZE'], shuffle=False )
 	test_steps_per_epoch = math.ceil(test_data_generator.samples / test_data_generator.batch_size)
 
 	# load the model
-	model = tf.keras.models.load_model(args.model_dir)
+	model = tf.keras.models.load_model(model_dir)
 
 	predictions = model.predict(test_data_generator, steps=test_steps_per_epoch)
 	# Get most likely class
@@ -74,12 +86,12 @@ if __name__ == "__main__":
 	ax1.set_xlabel('Predicted Values',fontsize=14)
 
 	date_time_string = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-	confusion_matrix_file = os.path.join(OUTPUT_DIR, date_time_string, "confusion_matrix.png")
+	confusion_matrix_file = os.path.join(output_dir, date_time_string, "confusion_matrix.png")
 	confusion_matrix_dir = os.path.dirname(confusion_matrix_file)
 	if not os.path.isdir(confusion_matrix_dir):
 		os.makedirs(confusion_matrix_dir)
 	plt.savefig(confusion_matrix_file, bbox_inches='tight')
 
-	classification_report_file = os.path.join(OUTPUT_DIR, date_time_string, "classification_report.txt")
+	classification_report_file = os.path.join(output_dir, date_time_string, "classification_report.txt")
 	with open(classification_report_file,'w') as outfile:
 		report_df.to_string(outfile)

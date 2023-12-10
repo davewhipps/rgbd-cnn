@@ -6,8 +6,8 @@
 
 # Project specific
 output/
-data/lavated_lidar_split
-data/lavated_rgb_split
+data/lavated_data_split_rgb
+data/lavated_data_split_lidar
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
