@@ -5,7 +5,7 @@ import datetime
 import argparse
 import tensorflow as tf
 import numpy as np
-from utilities import MultipleInputGenerator
+from utils.multimodal_data import MultipleInputGenerator
 
 HYPERPARAMS = {
     'BATCH_SIZE': 32,

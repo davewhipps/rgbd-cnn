@@ -14,7 +14,7 @@ from sklearn import metrics
 import seaborn as sn
 import pandas as pd
 
-# Parametrize hyperparams so we can grid search
+#Default hyperparams
 HYPERPARAMS = {
     'BATCH_SIZE': 32,
     'IMG_SIZE': (256, 192)

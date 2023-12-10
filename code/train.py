@@ -8,9 +8,10 @@ import numpy as np
 from sklearn.utils import class_weight
 from collections import Counter
 import platform
-from utilities import plot_history, read_hyperparameters, get_class_weights, get_base_pipeline
+from utils.models import get_base_model
+from utils.utilities import plot_history, read_hyperparameters, get_class_weights
 
-# Parametrize hyperparams so we can grid search
+#Default hyperparams
 HYPERPARAMS = {
     'NUM_EPOCHS': 20,
     'BATCH_SIZE': 32,
@@ -73,7 +74,7 @@ if __name__ == "__main__":
     # Create the base model from the pre-trained model MobileNet V2
     image_shape = image_size + (3,)
     print("Image Shape ", image_shape)
-    (inputs, pipeline) = get_base_pipeline(
+    (inputs, pipeline) = get_base_model(
         image_shape, batch_size, regularization, modality+'_')
     outputs = tf.keras.layers.Dense(
         num_classes, activation='softmax')(pipeline)

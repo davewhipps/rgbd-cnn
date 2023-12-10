@@ -9,14 +9,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import confusion_matrix
 from sklearn.utils import class_weight
-from sklearn.metrics import classification_report, roc_auc_score
+from sklearn.metrics import classification_report
 from sklearn import metrics
 import seaborn as sn
 import pandas as pd
-from utilities import MultipleInputGenerator, read_hyperparameters, get_class_weights, get_base_pipeline
+from utils.multimodal_data import MultipleInputGenerator
 
-
-#Parametrize hyperparams so we can grid search
+#Default hyperparams
 HYPERPARAMS = {
   'BATCH_SIZE' : 32,
   'IMG_SIZE' : (256, 192)

@@ -6,10 +6,12 @@ from tensorflow import keras
 import numpy as np
 from collections import Counter
 import pathlib
-from utilities import add_prefix, plot_history, MultipleInputGenerator, read_hyperparameters, get_class_weights, get_base_pipeline
+from utils.models import get_base_model
+from utils.utilities import plot_history, read_hyperparameters, get_class_weights
+from utils.multimodal_data import MultipleInputGenerator
 import platform
 
-#Parametrize hyperparams so we can grid search
+#Default hyperparams
 HYPERPARAMS = {
   'NUM_EPOCHS' : 20,
   'BATCH_SIZE' : 32,
@@ -70,8 +72,8 @@ if __name__ == "__main__":
 	# Create the base model from the pre-trained model MobileNet V2
 	image_shape = image_size + (3,)
 	print("Image Shape ", image_shape)
-	( rgb_input,   rgb_pipeline )   = get_base_pipeline( image_shape, batch_size, regularization, 'rgb_')
-	( lidar_input, lidar_pipeline ) = get_base_pipeline( image_shape, batch_size, regularization, 'lidar_')
+	( rgb_input,   rgb_pipeline )   = get_base_model( image_shape, batch_size, regularization, 'rgb_')
+	( lidar_input, lidar_pipeline ) = get_base_model( image_shape, batch_size, regularization, 'lidar_')
 
 	# Concatenate RGB and Lidar output
 	conv = keras.layers.concatenate([rgb_pipeline, lidar_pipeline])
