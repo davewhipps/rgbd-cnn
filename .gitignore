@@ -1,6 +1,13 @@
 # macOS Specific 
 .DS_Store
 
+# User specific
+.vscode
+
+# Project specific
+data/lavated_lidar_split
+data/lavated_rgb_split
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
