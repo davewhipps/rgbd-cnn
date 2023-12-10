@@ -10,7 +10,6 @@ from collections import Counter
 import platform
 from utilities import plot_history, read_hyperparameters, get_class_weights, get_base_pipeline
 
-
 # Parametrize hyperparams so we can grid search
 HYPERPARAMS = {
     'WANTS_TRAIN_FULL_MODEL': True,
