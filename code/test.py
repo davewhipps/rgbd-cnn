@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import confusion_matrix
 from sklearn.utils import class_weight
-from sklearn.metrics import classification_report, roc_auc_score
+from sklearn.metrics import classification_report
 from sklearn import metrics
 import seaborn as sn
 import pandas as pd

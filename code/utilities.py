@@ -135,9 +135,15 @@ def read_hyperparameters( params_file, default_hyperparams = {} ):
                 print(exc)
     return HYPERPARAMS  
 
-def get_class_weights( image_file_train_dir ):
+def get_class_weights( image_file_train_dir_path ):
     # Tease out the class names and number of classes
-    class_names = np.array(sorted([item.name for item in pathlib.Path(image_file_train_dir).glob('*') if not item.name.startswith('.')]))
+    image_file_train_dir = pathlib.Path(image_file_train_dir_path)
+    if not image_file_train_dir.exists():
+        print('Directory does not exist: ', image_file_train_dir_path)
+        raise Exception('Directory does not exist: '+image_file_train_dir_path)
+        return
+    
+    class_names = np.array(sorted([item.name for item in image_file_train_dir.glob('*') if not item.name.startswith('.')]))
     
     num_classes = len(class_names)
     print(class_names, " Num Classes: ", num_classes) # Output the class names
@@ -145,7 +151,7 @@ def get_class_weights( image_file_train_dir ):
     train_img_count = 0
     train_labels = []
     for class_name in class_names:
-        DIR = os.path.join(image_file_train_dir, class_name)
+        DIR = os.path.join(image_file_train_dir_path, class_name)
         num_items = len([name for name in os.listdir(DIR) if os.path.isfile(os.path.join(DIR, name))])
         for i in range( num_items ):
             train_labels.append(class_name)

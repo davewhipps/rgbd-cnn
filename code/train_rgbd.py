@@ -48,8 +48,8 @@ if __name__ == "__main__":
 
 	# Some data folder name constants
 	data_source_folder = args.data_dir
-	rgb_data_folder_name = "s2mnet_split"
-	lidar_data_folder_name = "s2mnet_split_lidar"
+	rgb_data_folder_name = "s2mnet_data_split"
+	lidar_data_folder_name = "s2mnet_data_split_lidar"
 	train_data_folder_name = "train"
 	val_data_folder_name = "val"
 
