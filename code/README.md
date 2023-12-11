@@ -9,14 +9,14 @@ Simple RGB or LiDAR training is initiated with `train.py` passing appropriate co
 
 For example, to train a simple classifier on the RGB data:
 ```
-> python train.py --data_dir "../data/lavated_rgb_split" --params_file "hyperparameters/hyperparams_rgb.yaml" --output_dir "../output"  
+> python train.py --data_dir "../data/lavated_data_split_rgb" --params_file "hyperparameters/hyperparams_rgb.yaml" --output_dir "../output"  
 ```
 
 Simple RGB or LiDAR Model performance can be checked using the script `test.py` passing appropriate command line arguments.
 
 For example, to test a model pre-trained on the LiDAR data:
 ```
-> python test.py --model_dir "../models/lavated-lidar" --data_dir "../data/lavated_lidar_split" --output_dir "../output" 
+> python test.py --model_dir "../models/lavated-lidar" --data_dir "../data/lavated_data_split_lidar" --output_dir "../output" 
 ```
 
 Multimodal RGB-D (RGB and LiDAR) image pair model training is initiated with `train_rgbd.py`. Several hyperparameters can be modified using the `hyperparameters/hyperparams_rgbd.yaml` file.
