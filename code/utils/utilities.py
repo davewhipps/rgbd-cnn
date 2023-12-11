@@ -7,6 +7,17 @@ import numpy as np
 from sklearn.utils import class_weight 
 
 def plot_history( history, output_dir, date_time_string ):
+    """This method plots Training and Validation Accuracy as well as Loss curves from the passed history object
+    and saves the plots to the passed output directory.
+
+    Parameters:
+    history ( History ): A History object returned by tensorflow.keras.model.fit()
+    output_dir ( String ): A string path to the desired output directory
+    date_time_string ( String ): A string representing a date/time stamp to append to the path
+
+    Returns:
+    None
+    """
     acc = history.history['accuracy']
     val_acc = history.history['val_accuracy']
     loss = history.history['loss']
@@ -37,6 +48,15 @@ def plot_history( history, output_dir, date_time_string ):
     plt.savefig(learning_curves_file, bbox_inches='tight')
 
 def read_hyperparameters( params_file, default_hyperparams = {} ):
+    """This method reads hyperparameters from the passed YAML file, with optional default parameters.
+
+    Parameters:
+    params_file ( String ): A string path to the hyperparameters.yaml file.
+    default_hyperparams ( Object ): An optional object containing defaults for some hyperparameters.
+
+    Returns:
+    HYPERPARAMS ( Object ): An object containing the defaults overridden by values in the YAML file.
+    """
     HYPERPARAMS = default_hyperparams
     if params_file:
         with open(params_file, 'r') as stream:
@@ -52,6 +72,15 @@ def read_hyperparameters( params_file, default_hyperparams = {} ):
     return HYPERPARAMS  
 
 def get_class_weights( image_file_train_dir_path ):
+    """This method calculates the per-class weights for a class separated directory of images.
+
+    Parameters:
+    image_file_train_dir_path ( String ): A string path to the class-separated directory of images.
+
+    Returns:
+    tuple ( Dictionary, Number ): A tuple whose first object is a dictionary of keys and relative weights,
+    and whose second object is the number of classes
+    """
     # Tease out the class names and number of classes
     image_file_train_dir = pathlib.Path(image_file_train_dir_path)
     if not image_file_train_dir.exists():
